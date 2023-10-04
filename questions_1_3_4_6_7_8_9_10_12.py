@@ -51,23 +51,6 @@ class Questions_3_6_8_9_12:
         rows = self.cursor.fetchall()
         print(tabulate(rows, headers=self.cursor.column_names))
 
-        def question_9(self):
-            query = """SELECT User.id, SUM(tp2.altitude-tp1.altitude)/ 3.281 AS altitude_in_meters
-                    FROM User, Activity, TrackPoint tp1, TrackPoint tp2
-                    WHERE User.id = Activity.user_id
-                        AND Activity.id = tp1.activity_id
-                        AND Activity.id = tp2.activity_id
-                        AND tp1.id = tp2.id-1
-                        AND tp1.altitude < tp2.altitude
-                        AND tp1.altitude != -777
-                        AND tp2.altitude != -777
-                    GROUP BY User.id
-                    ORDER BY SUM(tp2.altitude-tp1.altitude) DESC
-                    LIMIT 15;"""
-            self.cursor.execute(query)
-            rows = self.cursor.fetchall()
-            print(tabulate(rows, headers=self.cursor.column_names))
-
     def question_12(self):
         query = """SELECT rq.u_id as id_user, rq.a1_tm as most_used_transportation_mode
                 FROM User, (
@@ -234,7 +217,7 @@ class Questions_3_6_8_9_12:
 
 def main():
     program = Questions_3_6_8_9_12()
-    program.question_7b()
+    program.question_9()
 
 
 if __name__ == '__main__':
