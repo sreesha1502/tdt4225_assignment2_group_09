@@ -1,2 +1,2 @@
 # tdt4225_assignment2_group_09
-SQL and python code to 
+The python program for question 2 is in the file **getAverage ** 
