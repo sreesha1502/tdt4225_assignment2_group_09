@@ -28,6 +28,7 @@ def main():
     program = None
     try:
         program = ExampleProgram()
+        # group the users by transportation mode
         program.fetch_users_transportationMode("taxi")
     except Exception as e:
         print("ERROR: Failed to use database:", e)
