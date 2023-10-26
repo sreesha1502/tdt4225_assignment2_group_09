@@ -12,8 +12,7 @@ class ExampleProgram:
 
     def fetch_trackpoints(self):
         collection = self.db['activities']
-        objInstance1 = ObjectId("652eb251f15b380b11af44be")
-        objInstance2 = ObjectId("652eb25af15b380b11b06a22")
+
         documents = collection.aggregate([
             {"$match": {'transportation_mode': {'$exists': True}}},
             {"$lookup": {
@@ -29,8 +28,7 @@ class ExampleProgram:
                 'dateTime': "$tpoints.date_time"
             }}
         ])
-        # for doc in documents:
-        #   pprint(doc)
+
         return documents
 
 
@@ -43,6 +41,7 @@ def main():
         for activity in activities:
             user_id = activity['user_id']
             activity_id = activity['_id']
+            # fetching list of track points datetime for an activity
             tps_dates = activity['dateTime']
             current_tp_time = tps_dates[0]
             invalid_activity = False
@@ -50,16 +49,18 @@ def main():
                 if i != 0: current_tp_time = tps_dates[i-1]
                 next_tp_time = tps_dates[i]
                 delta = next_tp_time - current_tp_time
+                # calculating the difference in  time between track points
                 minute = delta.total_seconds() / 60
                 if minute > 5:
                     invalid_activity = True
                     break
+            # add invalid activities to the users dictionary
             if invalid_activity:
                 if user_id in users.keys():
                     users[user_id] += 1
                 else:
                     users[user_id] = 1
-                print(user_id, activity_id, current_tp_time, invalid_activity)
+                # print(user_id, activity_id, current_tp_time, invalid_activity)
         print(users)
         my_users = [(u, users[u]) for u in users]
         columns = ["user", "Number of Invalid activities"]
